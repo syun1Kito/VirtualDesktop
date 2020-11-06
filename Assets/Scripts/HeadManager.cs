@@ -14,7 +14,11 @@ public class HeadManager : MonoBehaviour
     private BodySourceManager _BodyManager;
 
     [SerializeField]
-    Slider eyeDepth, eyeHeight,neckAngle;
+    Slider eyeDepth, eyeHeight, neckAngle;
+    [SerializeField]
+    GameObject observerObj;
+    [SerializeField]
+    Text headPos;
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -106,8 +110,11 @@ public class HeadManager : MonoBehaviour
                 {
                     _Bodies[body.TrackingId] = CreateBodyObject(body.TrackingId);
                 }
-
-                RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                if (Time.timeScale == 1)
+                {
+                    Debug.Log("aaa");
+                    RefreshBodyObject(body, _Bodies[body.TrackingId]);
+                }
             }
         }
     }
@@ -150,9 +157,14 @@ public class HeadManager : MonoBehaviour
 
             if (jt.ToString() == "Head")
             {
-                this.transform.position = jointObj.localPosition + new Vector3(0,eyeHeight.value,eyeDepth.value);
-                this.transform.localEulerAngles = new Vector3(neckAngle.value, 180, 0);
-                Debug.Log(this.transform.position);
+
+
+
+                this.transform.position = jointObj.localPosition + new Vector3(0, eyeHeight.value, eyeDepth.value);
+                observerObj.transform.localEulerAngles = new Vector3(neckAngle.value, 0, 0);
+                Debug.Log("x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm");
+                headPos.text = "x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm";
+
             }
 
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
