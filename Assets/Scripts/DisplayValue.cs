@@ -6,10 +6,11 @@ using UnityEngine.UI;
 public class DisplayValue : MonoBehaviour
 {
     [SerializeField]
-    Text text;
+    //Text text;
+    InputField inputField;
     [SerializeField]
     Slider slider;
-
+    float preValue;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,6 +20,19 @@ public class DisplayValue : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        text.text = slider.value.ToString();
+
+        if (slider.value != preValue)
+        {
+            inputField.text = slider.value.ToString("f2");
+        }
+
+        preValue = slider.value;
+    }
+
+    public void InputText()
+    {
+        //スライダーにinputFieldの内容を反映
+        slider.value = float.Parse(inputField.text);
+
     }
 }

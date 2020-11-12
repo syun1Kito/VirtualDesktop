@@ -14,11 +14,13 @@ public class HeadManager : MonoBehaviour
     private BodySourceManager _BodyManager;
 
     [SerializeField]
-    Slider eyeDepth, eyeHeight, neckAngle;
+    Slider eyeDepth, eyeHeight, eyeWidth, neckAngle;
     [SerializeField]
     GameObject observerObj;
     [SerializeField]
-    Text headPos;
+    Text headPosText;
+
+    Vector3 shoulderLeft, shoulderRight,head;
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -112,8 +114,13 @@ public class HeadManager : MonoBehaviour
                 }
                 if (Time.timeScale == 1)
                 {
-                    Debug.Log("aaa");
                     RefreshBodyObject(body, _Bodies[body.TrackingId]);
+
+                    shoulderLeft = GetVector3FromJoint(body.Joints[JointType.ShoulderLeft]);
+                    shoulderRight = GetVector3FromJoint(body.Joints[JointType.ShoulderRight]);
+                    head = GetVector3FromJoint(body.Joints[JointType.Head]);
+
+                    MoveEyePosition(head, shoulderLeft, shoulderRight);
                 }
             }
         }
@@ -155,17 +162,10 @@ public class HeadManager : MonoBehaviour
             Transform jointObj = bodyObject.transform.Find(jt.ToString());
             jointObj.localPosition = GetVector3FromJoint(sourceJoint);
 
-            if (jt.ToString() == "Head")
-            {
-
-
-
-                this.transform.position = jointObj.localPosition + new Vector3(0, eyeHeight.value, eyeDepth.value);
-                observerObj.transform.localEulerAngles = new Vector3(neckAngle.value, 0, 0);
-                Debug.Log("x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm");
-                headPos.text = "x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm";
-
-            }
+            //if (jt.ToString() == "Head")
+            //{
+            //    MoveEyePosition(jointObj);
+            //}
 
             LineRenderer lr = jointObj.GetComponent<LineRenderer>();
             if (targetJoint.HasValue)
@@ -200,4 +200,18 @@ public class HeadManager : MonoBehaviour
     {
         return new Vector3(-joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
+
+    void MoveEyePosition(Vector3 head,Vector3 shoulderLeft,Vector3 shoulderRight)
+    {
+        this.transform.position = head + new Vector3(eyeWidth.value, eyeHeight.value, eyeDepth.value);
+        observerObj.transform.localEulerAngles = new Vector3(neckAngle.value, 0, 0);
+
+
+        // about shoulder
+
+        Debug.Log("x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm");
+        headPosText.text = "x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm";
+
+    }
+
 }
