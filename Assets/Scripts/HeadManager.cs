@@ -209,8 +209,8 @@ public class HeadManager : MonoBehaviour
 
         // about shoulder
 
-        Debug.Log("x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm");
-        headPosText.text = "x=" + this.transform.position.x * 10 + "cm y=" + this.transform.position.y * 10 + "cm z=" + this.transform.position.z * 10 + "cm";
+        Debug.Log("x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm");
+        headPosText.text = "x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm";
 
     }
 
