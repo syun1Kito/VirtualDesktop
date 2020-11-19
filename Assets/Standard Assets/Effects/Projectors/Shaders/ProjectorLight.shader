@@ -1,19 +1,21 @@
 // Upgrade NOTE: replaced '_Projector' with 'unity_Projector'
 // Upgrade NOTE: replaced '_ProjectorClip' with 'unity_ProjectorClip'
 
-Shader "Projector/TextureMapping" {
+Shader "Projector/Light" {
 	Properties {
-		_Color("Main Color", Color) = (1,1,1,1)
-		_ShadowTex ("Cookie", 2D) = "gray" {}
-		_FalloffTex ("FallOff", 2D) = "white" {}
+		_Color ("Main Color", Color) = (1,1,1,1)
+		_ShadowTex ("Cookie", 2D) = "" {}
+		_FalloffTex ("FallOff", 2D) = "" {}
 	}
+	
 	Subshader {
 		Tags {"Queue"="Transparent"}
 		Pass {
 			ZWrite Off
-			Blend SrcAlpha OneMinusSrcAlpha
+			ColorMask RGB
+			Blend DstColor One
 			Offset -1, -1
-
+	
 			CGPROGRAM
 			#pragma vertex vert
 			#pragma fragment frag
@@ -46,15 +48,14 @@ Shader "Projector/TextureMapping" {
 			
 			fixed4 frag (v2f i) : SV_Target
 			{
-				float4 projCoord = UNITY_PROJ_COORD(i.uvShadow);
-				projCoord /= projCoord.w;
-				clip(clamp(projCoord.xy, 0.0, 1.0) - abs(projCoord.xy));
-				fixed4 texS = tex2D(_ShadowTex, projCoord.xy);
+				fixed4 texS = tex2Dproj (_ShadowTex, UNITY_PROJ_COORD(i.uvShadow));
+				texS.rgb *= _Color.rgb;
+				texS.a = 1.0-texS.a;
+	
+				fixed4 texF = tex2Dproj (_FalloffTex, UNITY_PROJ_COORD(i.uvFalloff));
+				fixed4 res = texS * texF.a;
 
-				texS *= _Color;
-				fixed4 texF = tex2Dproj(_FalloffTex, UNITY_PROJ_COORD(i.uvFalloff));
-				fixed4 res = texS * fixed4(1.0, 1.0, 1.0, texF.a);
-				UNITY_APPLY_FOG(i.fogCoord, res);
+				UNITY_APPLY_FOG_COLOR(i.fogCoord, res, fixed4(0,0,0,0));
 				return res;
 			}
 			ENDCG

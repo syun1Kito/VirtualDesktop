@@ -1,0 +1,26 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+using UnityEngine.UI;
+
+public class DisplayManager : MonoBehaviour
+{
+
+    [SerializeField]
+    Slider displayDistance;
+    [SerializeField]
+    Projector textureMapping;
+
+    // Start is called before the first frame update
+    void Start()
+    {
+        
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        this.transform.localPosition = new Vector3(0, 0,displayDistance.value/10.0f);
+        textureMapping.fieldOfView = Mathf.Rad2Deg * Mathf.Atan2(this.transform.localScale.z / 2, displayDistance.value / 100) * 2;
+    }
+}
