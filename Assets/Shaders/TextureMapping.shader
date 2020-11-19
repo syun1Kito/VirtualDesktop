@@ -37,6 +37,7 @@ Shader "Projector/TextureMapping" {
 				o.uvShadow = mul (unity_Projector, vertex);
 				o.uvFalloff = mul (unity_ProjectorClip, vertex);
 				UNITY_TRANSFER_FOG(o,o.pos);
+				
 				return o;
 			}
 			
