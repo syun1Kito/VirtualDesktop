@@ -7,7 +7,7 @@ public class DisplayManager : MonoBehaviour
 {
 
     [SerializeField]
-    Slider displayDistance;
+    Slider displayDistance,displaySize;
     [SerializeField]
     Projector textureMapping;
 
@@ -22,5 +22,7 @@ public class DisplayManager : MonoBehaviour
     {
         this.transform.localPosition = new Vector3(0, 0,displayDistance.value/10.0f);
         textureMapping.fieldOfView = Mathf.Rad2Deg * Mathf.Atan2(this.transform.localScale.z / 2, displayDistance.value / 100) * 2;
+
+        this.transform.localScale = new Vector3(0.0221f * displaySize.value,1, 0.0124f * displaySize.value);
     }
 }

@@ -12,20 +12,36 @@ public class WindowCaptureManager : MonoBehaviour
     Material view;
 
     UwcWindow deskTop;
+    Texture2D deskTopTexture;
+
+
+
+    int desktopNum = 0;
+    int desktopMaxNum = 2;
+
+    Texture2D drawTexture;
+    Color[] buffer;
+
     void Start()
     {
-        //deskTop = UwcManager.FindDesktop(0);
-        //deskTop.RequestCapture();
-        //view.SetTexture("_ShadowTex", deskTop.texture);
-        ////view.SetTextureScale("_MainTex", new Vector2(1.0f, -1.0f));
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        deskTop = UwcManager.FindDesktop(0);
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            desktopNum = (desktopNum + 1) % desktopMaxNum;
+            Debug.Log(desktopNum);
+        }
+
+        deskTop = UwcManager.FindDesktop(desktopNum);
         deskTop.RequestCapture();
-        view.SetTexture("_ShadowTex", deskTop.texture);
-        view.SetTextureScale("_MainTex", new Vector2(1.0f, -1.0f));
-    }
+        deskTopTexture = deskTop.texture;
+
+        
+
+        view.SetTexture("_ShadowTex", deskTopTexture);
+    }   
 }
