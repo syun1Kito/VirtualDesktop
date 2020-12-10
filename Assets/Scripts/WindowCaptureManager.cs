@@ -40,7 +40,6 @@ public class WindowCaptureManager : MonoBehaviour
         deskTop.RequestCapture();
         deskTopTexture = deskTop.texture;
 
-        
 
         view.SetTexture("_ShadowTex", deskTopTexture);
     }   
