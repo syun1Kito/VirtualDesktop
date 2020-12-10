@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
@@ -14,13 +15,19 @@ public class HeadManager : MonoBehaviour
     private BodySourceManager _BodyManager;
 
     [SerializeField]
-    Slider eyeDepth, eyeHeight, eyeWidth, neckAngle;
+    Slider eyeDepth, eyeHeight, eyeWidth, neckOffsetAngleX;
+    [SerializeField]
+    Toggle xRotatable;
     [SerializeField]
     GameObject observerObj;
     [SerializeField]
     Text headPosText;
+    [SerializeField]
+    Text neckPosText;
+    
 
-    Vector3 shoulderLeft, shoulderRight,head;
+    Vector3 shoulderLeft, shoulderRight, head, neck;
+    float previousNeckAngleX;
 
     private Dictionary<Kinect.JointType, Kinect.JointType> _BoneMap = new Dictionary<Kinect.JointType, Kinect.JointType>()
     {
@@ -119,8 +126,10 @@ public class HeadManager : MonoBehaviour
                     shoulderLeft = GetVector3FromJoint(body.Joints[JointType.ShoulderLeft]);
                     shoulderRight = GetVector3FromJoint(body.Joints[JointType.ShoulderRight]);
                     head = GetVector3FromJoint(body.Joints[JointType.Head]);
+                    neck = GetVector3FromJoint(body.Joints[JointType.Neck]);
 
-                    MoveEyePosition(head, shoulderLeft, shoulderRight);
+                    MoveEyePosition(head);
+                    RotateHeadPosition(shoulderLeft, shoulderRight,head,neck);
                 }
             }
         }
@@ -201,17 +210,47 @@ public class HeadManager : MonoBehaviour
         return new Vector3(-joint.Position.X * 10, joint.Position.Y * 10, joint.Position.Z * 10);
     }
 
-    void MoveEyePosition(Vector3 head,Vector3 shoulderLeft,Vector3 shoulderRight)
+    void MoveEyePosition(Vector3 head)
     {
         this.transform.position = head + new Vector3(eyeWidth.value, eyeHeight.value, eyeDepth.value);
-        observerObj.transform.localEulerAngles = new Vector3(neckAngle.value, 0, 0);
-
-
+        
         // about shoulder
 
-        Debug.Log("x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm");
-        headPosText.text = "x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm";
+        //Debug.Log("x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm");
+        headPosText.text = "Head : x=" + (this.transform.position.x * 10).ToString("f2") + "cm y=" + (this.transform.position.y * 10).ToString("f2") + "cm z=" + (this.transform.position.z * 10).ToString("f2") + "cm";
+        neckPosText.text = "Neck : x=" + (neck.x * 10).ToString("f2") + "cm y=" + (neck.y * 10).ToString("f2") + "cm z=" + (neck.z * 10).ToString("f2") + "cm";
 
     }
 
+    void RotateHeadPosition(Vector3 shoulderLeft, Vector3 shoulderRight,Vector3 head ,Vector3 neck)
+    {
+
+        float neckAngleY = Mathf.Rad2Deg * Mathf.Atan2(shoulderLeft.z - shoulderRight.z, shoulderLeft.x - shoulderRight.x);
+
+        Vector3 neckToHead = head - neck; ;
+        Vector3 neckToTop = new Vector3(neck.x, head.y, neck.z) - neck;
+
+
+        float neckAngleX = Mathf.Rad2Deg * Mathf.Acos(Vector3.Dot(neckToHead,neckToTop)/(neckToHead.magnitude * neckToTop.magnitude));
+        //Debug.Log((neckToHead.magnitude * neckToTop.magnitude));
+
+        if (xRotatable.isOn)
+        {
+            if (Mathf.Abs(neckAngleY) < 10)
+            {
+                observerObj.transform.localEulerAngles = new Vector3(neckAngleX + neckOffsetAngleX.value, -neckAngleY, 0);
+                previousNeckAngleX = neckAngleX;
+            }
+            else
+            {
+                observerObj.transform.localEulerAngles = new Vector3(previousNeckAngleX + neckOffsetAngleX.value, -neckAngleY, 0);
+            }
+        }
+        else
+        {
+            observerObj.transform.localEulerAngles = new Vector3(neckOffsetAngleX.value, -neckAngleY, 0);
+        }
+    }
+
+    
 }
