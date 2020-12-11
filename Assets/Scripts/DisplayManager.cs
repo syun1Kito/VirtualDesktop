@@ -7,9 +7,11 @@ public class DisplayManager : MonoBehaviour
 {
 
     [SerializeField]
-    Slider displayDistance,displaySize;
+    Slider displayDistance,displaySize, KeystoneCorrection;
     [SerializeField]
     Projector textureMapping;
+    [SerializeField]
+    Material view;
 
     // Start is called before the first frame update
     void Start()
@@ -24,5 +26,7 @@ public class DisplayManager : MonoBehaviour
         textureMapping.fieldOfView = Mathf.Rad2Deg * Mathf.Atan2(this.transform.localScale.z / 2, displayDistance.value / 100) * 2;
 
         this.transform.localScale = new Vector3(0.0221f * displaySize.value,1, 0.0124f * displaySize.value);
+
+        view.SetFloat("_KeystoneCorrection", KeystoneCorrection.value);
     }
 }

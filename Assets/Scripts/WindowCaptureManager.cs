@@ -19,8 +19,6 @@ public class WindowCaptureManager : MonoBehaviour
     int desktopNum = 0;
     int desktopMaxNum = 2;
 
-    Texture2D drawTexture;
-    Color[] buffer;
 
     void Start()
     {
