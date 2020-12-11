@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using uWindowCapture;
 
 public class WindowCaptureManager : MonoBehaviour
@@ -10,6 +11,8 @@ public class WindowCaptureManager : MonoBehaviour
     //UwcManager uwcManager;
     [SerializeField]
     Material view;
+    [SerializeField]
+    Text desktopNumText;
 
     UwcWindow deskTop;
     Texture2D deskTopTexture;
@@ -17,12 +20,12 @@ public class WindowCaptureManager : MonoBehaviour
 
 
     int desktopNum = 0;
-    int desktopMaxNum = 2;
+    int desktopMaxNum = 1;
 
 
     void Start()
     {
-
+        desktopMaxNum = UwcManager.desktopCount;
     }
 
     // Update is called once per frame
@@ -30,15 +33,18 @@ public class WindowCaptureManager : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
+            desktopMaxNum = UwcManager.desktopCount;
             desktopNum = (desktopNum + 1) % desktopMaxNum;
+            desktopNumText.text = desktopNum.ToString();
             Debug.Log(desktopNum);
         }
+   
 
         deskTop = UwcManager.FindDesktop(desktopNum);
         deskTop.RequestCapture();
         deskTopTexture = deskTop.texture;
 
 
-        view.SetTexture("_ShadowTex", deskTopTexture);
+        //view.SetTexture("_ShadowTex", deskTopTexture);
     }   
 }

@@ -15,8 +15,8 @@ TagManager:
   - 
   - OnMainCamera
   - Ignore
-  - 
-  - 
+  - OnEyeCamera
+  - OnCamera
   - 
   - 
   - 
