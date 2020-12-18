@@ -13,7 +13,9 @@ public class DisplayManager : MonoBehaviour
     [SerializeField]
     Material view;
     [SerializeField]
-    GameObject display, cilinderPos,cilinder, observerObj;
+    GameObject display,displayShadow, cilinderPos, cilinderPivot, cilinder, observerObj,screenObj;
+
+    float cilinderLength;
 
     // Start is called before the first frame update
     void Start()
@@ -30,7 +32,10 @@ public class DisplayManager : MonoBehaviour
         textureMapping.fieldOfView = Mathf.Rad2Deg * Mathf.Atan2(display.transform.localScale.z / 2, displayDistance.value / 100) * 2;
 
         display.transform.localScale = new Vector3(0.0221f * displaySize.value,1, 0.0124f * displaySize.value);
+        displayShadow.transform.localScale = new Vector3(0.0221f * displaySize.value, 1, 0.0124f * displaySize.value);
         cilinderPos.transform.localEulerAngles = new Vector3(-observerObj.transform.localEulerAngles.x, 0,0);
+        cilinderLength = (observerObj.transform.position.y/* - screenObj.transform.position.y*/)/ 2 /*+ cilinderPivot.transform.position.y*/; 
+        cilinderPivot.transform.localScale = new Vector3(1,cilinderLength,1);
 
         view.SetFloat("_KeystoneCorrection", KeystoneCorrection.value);
     }

@@ -8,7 +8,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 5379216694173133390}
+  - component: {fileID: 7049805939727109820}
   - component: {fileID: 5379216694173133388}
   - component: {fileID: 5379216694173133391}
   m_Layer: 8
@@ -18,20 +18,20 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &5379216694173133390
+--- !u!4 &7049805939727109820
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5379216694173133385}
-  m_LocalRotation: {x: 0.5994428, y: 0, z: 0, w: 0.8004176}
-  m_LocalPosition: {x: 0, y: -7, z: -24.37}
-  m_LocalScale: {x: 1.123309, y: 25.202314, z: 1.1498153}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 0.3, y: 1, z: 0.3}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 73.66, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5379216694173133388
 MeshFilter:
   m_ObjectHideFlags: 0
