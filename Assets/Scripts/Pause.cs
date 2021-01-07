@@ -55,8 +55,8 @@ public class Pause : MonoBehaviour
             case PauseState.StopView:
 
                 setting.SetActive(true);
-                sideCamera.SetActive(true);
-                backCamera.SetActive(true);
+                //sideCamera.SetActive(true);
+                //backCamera.SetActive(true);
                 scaler.SetActive(true);
                 Time.timeScale = 0;
                 break;

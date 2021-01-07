@@ -34,7 +34,7 @@ public class DisplayManager : MonoBehaviour
         display.transform.localScale = new Vector3(0.0221f * displaySize.value,1, 0.0124f * displaySize.value);
         displayShadow.transform.localScale = new Vector3(0.0221f * displaySize.value, 1, 0.0124f * displaySize.value);
         cilinderPos.transform.localEulerAngles = new Vector3(-observerObj.transform.localEulerAngles.x, 0,0);
-        cilinderLength = (observerObj.transform.position.y/* - screenObj.transform.position.y*/)/ 2 /*+ cilinderPivot.transform.position.y*/; 
+        cilinderLength = (cilinderPivot.transform.position.y - screenObj.transform.position.y/*observerObj.transform.position.y - screenObj.transform.position.y*/) / 2 /*+ cilinderPivot.transform.position.y*/; 
         cilinderPivot.transform.localScale = new Vector3(1,cilinderLength,1);
 
         view.SetFloat("_KeystoneCorrection", KeystoneCorrection.value);

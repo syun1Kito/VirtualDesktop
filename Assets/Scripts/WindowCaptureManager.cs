@@ -12,6 +12,8 @@ public class WindowCaptureManager : MonoBehaviour
     [SerializeField]
     Material view;
     [SerializeField]
+    Material virtualView;
+    [SerializeField]
     Text desktopNumText;
 
     UwcWindow deskTop;
@@ -45,6 +47,7 @@ public class WindowCaptureManager : MonoBehaviour
         deskTopTexture = deskTop.texture;
 
 
-        //view.SetTexture("_ShadowTex", deskTopTexture);
+        view.SetTexture("_ShadowTex", deskTopTexture);
+        virtualView.SetTexture("_MainTex", deskTopTexture);
     }   
 }
