@@ -10,6 +10,9 @@ public class DrawFrustum : MonoBehaviour
     float nearClipPlane = 0.01f;
     [SerializeField, Range(0.0001f, 1000.0f)]
     float farClipPlane = 200.0f;
+    [SerializeField]
+    bool isDraw = true;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -24,19 +27,25 @@ public class DrawFrustum : MonoBehaviour
     }
 
     private void OnDrawGizmos()
-    {   
-        if(projector == null) projector = GetComponent<Projector>();
+    {
+        if (projector == null) projector = GetComponent<Projector>();
 
-        var gizmosMatrix = Gizmos.matrix;
-        Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+        if (isDraw)
+        {
 
-        Gizmos.color = new Color(1f, 0, 0, 1);
 
-        Gizmos.DrawFrustum(Vector3.zero, projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
-        //Gizmos.DrawFrustum(new Vector3(0,0.1f,0), projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
-        //Gizmos.DrawFrustum(new Vector3(0, -0.1f, 0), projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
 
-        Gizmos.matrix = gizmosMatrix;
+            var gizmosMatrix = Gizmos.matrix;
+            Gizmos.matrix = Matrix4x4.TRS(transform.position, transform.rotation, Vector3.one);
+
+            Gizmos.color = new Color(1f, 0, 0, 1);
+
+            Gizmos.DrawFrustum(Vector3.zero, projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
+            //Gizmos.DrawFrustum(new Vector3(0,0.1f,0), projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
+            //Gizmos.DrawFrustum(new Vector3(0, -0.1f, 0), projector.fieldOfView, farClipPlane, nearClipPlane, projector.aspectRatio);
+
+            Gizmos.matrix = gizmosMatrix;
+        }
     }
 
 }
